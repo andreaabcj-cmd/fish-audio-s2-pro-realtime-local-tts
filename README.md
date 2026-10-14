@@ -5,7 +5,7 @@
 Field notes from building a fully local voice assistant (Spanish, voice cloning from a short reference + transcript).
 Everything below was measured on **one machine**, in October 2026. Where something was *not* measured, it says so.
 
-> 🔊 **Listen to the samples** on the [project page](https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#en-listen) or in [`samples/`](samples/) (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).
+> 🔊 **Listen to the samples** on the [project page](https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#en-listen) or in [`samples/`](samples/) (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).
 
 > **TL;DR**
 > * Fish S2 Pro runs fine in real time on a 16 GB consumer GPU **alongside a 12B chat model**, with the *Q4_K* GGUF.

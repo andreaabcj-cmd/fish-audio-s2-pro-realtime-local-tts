@@ -5,7 +5,7 @@
 Notas de campo de quem montou um assistente de voz 100% local (espanhol, clonagem de voz a partir de uma referência curta + transcrição).
 Tudo foi medido em **uma única máquina**, em outubro de 2026. O que *não* foi medido está dito como tal.
 
-> 🔊 **Escute as amostras** na [página do projeto](https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#pt-escute) ou em [`samples/`](samples/) (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).
+> 🔊 **Escute as amostras** na [página do projeto](https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#pt-escute) ou em [`samples/`](samples/) (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).
 
 > **Resumo**
 > * O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB **junto de um modelo de chat de 12B**, usando o GGUF **Q4_K**.
