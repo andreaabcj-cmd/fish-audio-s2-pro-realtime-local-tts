@@ -1,7 +1,11 @@
 # Fish Audio S2 Pro as a *real-time* local voice on a 16 GB GPU — next to a 12B LLM (Windows, RTX 5060 Ti)
 
+<p align="center"><img src="assets/ali_tchau.gif" alt="Ali, the mascot of the assistant, waving goodbye (seamless loop)" width="190"></p>
+
 Field notes from building a fully local voice assistant (Spanish, voice cloning from a short reference + transcript).
 Everything below was measured on **one machine**, in October 2026. Where something was *not* measured, it says so.
+
+> 🔊 **Listen to the samples** on the [project page](https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#en-listen) or in [`samples/`](samples/) (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).
 
 > **TL;DR**
 > * Fish S2 Pro runs fine in real time on a 16 GB consumer GPU **alongside a 12B chat model**, with the *Q4_K* GGUF.
@@ -148,5 +152,12 @@ The Fish Audio S2 Pro model card restricts the weights to **non-commercial** use
 audio.cpp, llama.cpp and Ollama have their own licenses.
 
 ## Credits
-[audio.cpp](https://github.com/0xShug0/audio.cpp) (and its Fish quantization recipe), [Fish Audio](https://fish.audio), llama.cpp, Ollama.
-Written with Claude Code (Anthropic) during a long pairing session; all numbers come from scripts run on the machine above.
+This was a **team effort**:
+
+* **André** ([@andreaabcj-cmd](https://github.com/andreaabcj-cmd)) — product direction, the hardware, every decision, and the listening tests (the only human ears behind the "sounds good" claims).
+* **Claude** (Anthropic, via Claude Code) — engineering, measurements, research, and this write-up. All numbers come from scripts run on the machine above; raw data is in [`data/`](data/).
+* **The open-source community**, whose work made it possible and whose findings we read before measuring anything ([RESEARCH.md](RESEARCH.md)): the
+  [audio.cpp](https://github.com/0xShug0/audio.cpp) project and its Fish quantization recipe, [Fish Audio](https://fish.audio) and the `fish-speech` issue threads,
+  [s2.cpp](https://github.com/rodrigomatta/s2.cpp) and the GGUF publishers on Hugging Face, SGLang-Omni, llama.cpp (and the maintainers who documented the sliding-window checkpoint behaviour), Ollama, and everyone who posted benchmarks and bug reports.
+
+Raw measurements: [`data/`](data/) · What we read first: [RESEARCH.md](RESEARCH.md) · Example adapter: [`fish_tts_adapter.py`](fish_tts_adapter.py).

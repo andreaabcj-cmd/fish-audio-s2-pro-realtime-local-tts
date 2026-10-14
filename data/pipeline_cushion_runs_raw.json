@@ -1,0 +1,90 @@
+{
+ "0.65/60": [
+  {
+   "primeira_frase_do_cerebro_s": 1.04,
+   "som_s": 2.13,
+   "voz_depois_do_cerebro_s": 1.1,
+   "buracos": 0,
+   "fala_s": 9.0
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.63,
+   "som_s": 1.92,
+   "voz_depois_do_cerebro_s": 1.29,
+   "buracos": 0,
+   "fala_s": 10.7
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.7,
+   "som_s": 1.88,
+   "voz_depois_do_cerebro_s": 1.17,
+   "buracos": 0,
+   "fala_s": 11.3
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.65,
+   "som_s": 1.92,
+   "voz_depois_do_cerebro_s": 1.27,
+   "buracos": 0,
+   "fala_s": 8.0
+  },
+  {
+   "primeira_frase_do_cerebro_s": 1.01,
+   "som_s": 2.25,
+   "voz_depois_do_cerebro_s": 1.24,
+   "buracos": 0,
+   "fala_s": 7.0
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.98,
+   "som_s": 2.06,
+   "voz_depois_do_cerebro_s": 1.08,
+   "buracos": 0,
+   "fala_s": 6.4
+  }
+ ],
+ "0.8/60": [
+  {
+   "primeira_frase_do_cerebro_s": 1.25,
+   "som_s": 2.13,
+   "voz_depois_do_cerebro_s": 0.87,
+   "buracos": 0,
+   "fala_s": 7.2
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.6,
+   "som_s": 1.96,
+   "voz_depois_do_cerebro_s": 1.36,
+   "buracos": 0,
+   "fala_s": 11.6
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.69,
+   "som_s": 1.96,
+   "voz_depois_do_cerebro_s": 1.27,
+   "buracos": 0,
+   "fala_s": 9.2
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.69,
+   "som_s": 2.17,
+   "voz_depois_do_cerebro_s": 1.48,
+   "buracos": 0,
+   "fala_s": 7.1
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.65,
+   "som_s": 2.22,
+   "voz_depois_do_cerebro_s": 1.57,
+   "buracos": 0,
+   "fala_s": 9.7
+  },
+  {
+   "primeira_frase_do_cerebro_s": 0.92,
+   "som_s": 1.99,
+   "voz_depois_do_cerebro_s": 1.06,
+   "buracos": 0,
+   "fala_s": 6.0
+  }
+ ]
+}

@@ -1,0 +1,106 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research notes — Fish S2 Pro real-time</title><meta name="description" content="Research notes"><style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#16202a;--mute:#5a6b7b;--line:#dfe5ec;--acc:#0a7d6b;--acc2:#e8f5f2;--code:#0f1b24;--codeink:#e6f1ee;--warn:#fff7e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e141a;--card:#151d25;--ink:#e6edf3;--mute:#9bb0c2;--line:#26323d;--acc:#4fd1b6;--acc2:#12302a;--code:#0a1015;--codeink:#d7efe8;--warn:#2b2410}}
+:root[data-theme=dark]{--bg:#0e141a;--card:#151d25;--ink:#e6edf3;--mute:#9bb0c2;--line:#26323d;--acc:#4fd1b6;--acc2:#12302a;--code:#0a1015;--codeink:#d7efe8;--warn:#2b2410}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc)}
+header.top{background:linear-gradient(135deg,#0a7d6b,#12507a);color:#fff;padding:40px 16px 34px}
+header.top{position:relative}header.top .in{max-width:1080px;margin:0 auto;padding-right:190px}.mascot{position:absolute;right:max(16px,calc(50% - 540px));top:50%;transform:translateY(-50%);border-radius:50%;border:3px solid rgba(255,255,255,.55)}@media (max-width:700px){header.top .in{padding-right:0}.mascot{position:static;transform:none;margin:14px 0 0 16px;display:block}}
+header.top h1{margin:0 0 8px;font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.2}
+header.top p{margin:0;opacity:.92;max-width:760px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.bar a,.bar button{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:999px;cursor:pointer;font:inherit;font-size:.9rem;text-decoration:none}
+.bar a:hover,.bar button:hover,.bar .on{background:#fff;color:#0a4f6b}
+.wrap{max-width:1080px;margin:0 auto;padding:22px 16px 60px;display:grid;grid-template-columns:230px 1fr;gap:30px}
+nav.toc{position:sticky;top:14px;align-self:start;font-size:.9rem;max-height:calc(100vh - 28px);overflow:auto}
+nav.toc ul{list-style:none;margin:0;padding:0}nav.toc li{margin:0}
+nav.toc a{display:block;padding:5px 10px;border-left:2px solid var(--line);color:var(--mute);text-decoration:none}
+nav.toc a:hover{color:var(--acc);border-color:var(--acc)}
+main{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 28px 28px;min-width:0}
+main h2{margin:2rem 0 .6rem;padding-top:.4rem;border-top:1px solid var(--line);font-size:1.45rem}
+main h2:first-of-type{border-top:0}
+main h3{margin:1.5rem 0 .4rem;font-size:1.15rem}
+blockquote{margin:1rem 0;padding:.7rem 1rem;background:var(--acc2);border-left:4px solid var(--acc);border-radius:0 8px 8px 0}
+blockquote p{margin:.35rem 0}
+table{border-collapse:collapse;width:100%;margin:1rem 0;display:block;overflow-x:auto;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--acc2)}
+code{background:var(--acc2);padding:.1em .35em;border-radius:5px;font-size:.88em}
+pre{position:relative;background:var(--code);color:var(--codeink);padding:14px 16px;border-radius:10px;overflow:auto;font-size:.86rem}
+pre code{background:none;padding:0;color:inherit}
+pre button.cp{position:absolute;top:6px;right:6px;font-size:.75rem;background:#ffffff22;color:#fff;border:1px solid #ffffff44;border-radius:6px;padding:2px 8px;cursor:pointer}
+.lang[hidden]{display:none}
+.samples{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:12px 0}
+.samples figure{margin:0;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.samples figcaption{font-weight:600;font-size:.9rem;margin-bottom:6px}
+.samples audio{width:100%}.samples blockquote{margin:.5rem 0 0;font-size:.85rem;padding:.4rem .7rem}
+footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font-size:.88rem}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav.toc{position:static;max-height:none}main{padding:4px 16px 22px}}
+</style></head><body><header class="top"><div class="in"><h1 data-lang="en">Research notes · Notas de pesquisa</h1><h1 data-lang="pt" hidden>Notas de pesquisa · Research notes</h1>
+<p data-lang="en">What we read before measuring — with sources. (English only.)</p><p data-lang="pt" hidden>O que lemos antes de medir — com fontes. (Somente em inglês.)</p><div class="bar"><a href="index.html" class="">Guide · Guia</a><a href="research.html" class="on">Research · Pesquisa</a><a href="data/">Data · Dados</a><a href="fish_tts_adapter.py">Adapter · Adaptador</a><button data-set="en">EN</button><button data-set="pt">PT-BR</button></div></div><img class="mascot" src="assets/ali_tchau.gif" alt="Ali waving" width="150" height="154"></header><div class="wrap"><nav class="toc"><ul><li><a href="#rs-why-it-is-hard">Why it is hard</a></li><li><a href="#rs-which-runtime-streams-for-real">Which runtime streams for real</a></li><li><a href="#rs-quantization">Quantization</a></li><li><a href="#rs-codec">Codec</a></li><li><a href="#rs-smaller-models">Smaller models</a></li><li><a href="#rs-emotion-tags">Emotion tags</a></li><li><a href="#rs-rtx-50xx-sm_120-notes">RTX 50xx (sm_120) notes</a></li><li><a href="#rs-what-we-did-with-it">What we did with it</a></li></ul></nav><main>
+<p>What we read before measuring anything (13 Oct 2026), condensed. We stand on a lot of other people's work — thank you.
+Labels: <strong>[confirmed]</strong> = official source, maintainer, or a published measurement · <strong>[community]</strong> = a user's report ·
+<strong>[estimate]</strong> = our own back-of-envelope reasoning (measured later where noted in the <a href="README.md">guide</a>).</p>
+<h2 id="rs-why-it-is-hard">Why it is hard</h2>
+<p>Each audio frame (1/21.5 s) needs a read of the big "slow" model (≈4B params, ≈8 GB in BF16) <strong>and</strong> nine passes of the small "fast" model (≈400M).
+A 16 GB consumer card reads ~448 GB/s, so in BF16 the theoretical ceiling is around 30 frames/s while real time needs 21.5. <strong>[estimate]</strong>
+Quantizing roughly doubles that ceiling — which is why GGUF Q8/Q6/Q4 mattered so much on this card.</p>
+<h2 id="rs-which-runtime-streams-for-real">Which runtime streams for real</h2>
+<ul>
+<li><strong>audio.cpp</strong> (C++/GGML, Windows + CUDA) <strong>[confirmed by project docs]</strong>: <code>--mode streaming</code> with an <em>incremental</em> codec (keeps codec state, sends only new audio);
+  HTTP <code>/v1/audio/speech</code> with <code>"stream_format": "sse"</code>; options like <code>fish_audio.codec_weight_type</code>, <code>--max-tokens</code>, <code>--text-chunk-size</code>.
+  <a href="https://github.com/0xShug0/audio.cpp/blob/main/docs/models/fish_audio.md">https://github.com/0xShug0/audio.cpp/blob/main/docs/models/fish_audio.md</a> — an RTX 5090 user reports 3.1–3.4× faster than real time:
+  <a href="https://github.com/fishaudio/fish-speech/issues/1308">https://github.com/fishaudio/fish-speech/issues/1308</a>.
+  <strong>Our finding: the v0.9.1 release binary rejects streaming for Fish; build from source ≥ <code>b0feeff</code> (<a href="README.md">guide §2</a>).</strong></li>
+<li><strong>SGLang-Omni</strong> <strong>[confirmed]</strong>: real streaming in windows (<code>stream_stride=40</code>, <code>stream_followup_stride=45</code>, <code>stream_overlap_tokens=20</code>,
+  <code>stream_crossfade_samples=512</code> in <code>stages.py</code>); <code>torch.compile</code> for the small model is only enabled on sm_90 (H100/H200), so on RTX 50xx (sm_120) it runs uncompiled.
+  <a href="https://github.com/sgl-project/sglang-omni/blob/main/sglang_omni/models/fishaudio_s2_pro/stages.py">https://github.com/sgl-project/sglang-omni/blob/main/sglang_omni/models/fishaudio_s2_pro/stages.py</a> ·
+  PR #391 (codec ≈0.6 GB + audio decoder ≈1.4 GB are outside SGLang's memory accounting): <a href="https://github.com/sgl-project/sglang-omni/pull/391">https://github.com/sgl-project/sglang-omni/pull/391</a>.
+  A community RTX 5090 recipe reaches 0.36 s first audio, RTF 0.48, but needs ~24.6 GB: <a href="https://huggingface.co/neko-legends/fish-audio-s2-realtime-optimized-5090">https://huggingface.co/neko-legends/fish-audio-s2-realtime-optimized-5090</a>.
+  In our tests on 16 GB (BF16, mem 0.55): first audio 1.1–1.3 s, RTF ≈1.15–1.24, ~8 GB; raising memory to 0.70 made it <em>worse</em> (RTF 1.8 — the card spilled).</li>
+<li><strong>s2.cpp</strong> <strong>[community]</strong>: GGUF down to Q2, but "exact" streaming re-decodes the beginning (higher latency). <a href="https://github.com/rodrigomatta/s2.cpp">https://github.com/rodrigomatta/s2.cpp</a></li>
+<li><strong>vLLM-Omni</strong> supports it but peaks ~49 GB on an A800. Not an option here.</li>
+<li>The reference server of <code>fish-speech</code> was not usable for real time in our tests (BF16 + compile: 15.8 tok/s, RTF 1.88, ~15 GB; INT8 + compile: 25.3 tok/s, RTF 0.87, 5.5 GB model, 11 GB peak decoding 30 s at once).</li>
+</ul>
+<h2 id="rs-quantization">Quantization</h2>
+<ul>
+<li><strong>GGUF in audio.cpp</strong> <strong>[community, with table]</strong>: Q8_0 6.32 GB, Q6_K 5.44 GB, Q4_K 4.50 GB, keeping the small "fast" decoder and the codec at full precision.
+  On an 8 GB laptop 4070 (~256 GB/s) RTF ≈ 1.25 / 1.15 / 1.15 with clean audio. <strong>Lesson: quantizing the small model ruins the sound.</strong>
+  Recipe: <a href="https://github.com/0xShug0/audio.cpp/blob/main/docs/proposals/fish_audio_quantization_recipe.md">https://github.com/0xShug0/audio.cpp/blob/main/docs/proposals/fish_audio_quantization_recipe.md</a> ·
+  files: <a href="https://huggingface.co/audio-cpp/audio.cpp-gguf">https://huggingface.co/audio-cpp/audio.cpp-gguf</a> · <a href="https://huggingface.co/rodrigomt/s2-pro-gguf">https://huggingface.co/rodrigomt/s2-pro-gguf</a>.</li>
+<li><strong>SGLang-Omni does not accept a quantized S2 Pro</strong> <strong>[confirmed]</strong>: PR #1511 says S2 Pro "never forwards quant_config" and now refuses <code>--quantization fp8</code>. <a href="https://github.com/sgl-project/sglang-omni/pull/1511">https://github.com/sgl-project/sglang-omni/pull/1511</a></li>
+<li><strong>FP8 weight-only checkpoints</strong> (several authors): ~4.7–6.2 GB of weights but the math is done in BF16 (unpacked) — saves memory, not speed. <a href="https://huggingface.co/AEmotionStudio/fish-speech-s2-pro-fp8">https://huggingface.co/AEmotionStudio/fish-speech-s2-pro-fp8</a></li>
+<li><strong>NF4 / bitsandbytes INT8 / w4a16</strong> <strong>[community]</strong>: slowness and &gt;21 GB use reported (the 32 768-position cache is to blame).
+  <a href="https://github.com/fishaudio/fish-speech/issues/1168">https://github.com/fishaudio/fish-speech/issues/1168</a> · <a href="https://huggingface.co/scarxity/fish-speech-s2-pro-nf4">https://huggingface.co/scarxity/fish-speech-s2-pro-nf4</a></li>
+<li><strong>MXFP8 from Fish itself</strong> <strong>[confirmed]</strong>: production uses MXFP8 on RTX 5090 via <code>fish-scales-ops</code> (Apache-2.0), kernels only, Linux + an exact PyTorch build; a layout mistake once gave 53% logit error that speed numbers did not reveal.
+  <a href="https://fish.audio/blog/tts-inference-optimization-s2-pro-free/">https://fish.audio/blog/tts-inference-optimization-s2-pro-free/</a> · <a href="https://github.com/fishaudio/fish-scales-ops">https://github.com/fishaudio/fish-scales-ops</a></li>
+</ul>
+<h2 id="rs-codec">Codec</h2>
+<p>The codec is causal: it can decode in chunks while keeping state (audio.cpp) or in windows with 20 tokens of overlap + crossfade (SGLang-Omni). Decoding 30 s at once is what gave a ~11 GB peak in our first PyTorch runs.
+Limiting <code>max_seq_len</code> to 4096 saves ~4.5 GB of cache in the official repo (<a href="https://github.com/fishaudio/fish-speech/pull/1306">https://github.com/fishaudio/fish-speech/pull/1306</a>). A sibling model (Drama 3) decodes in fp16 by default, a hint that fp16 may be safe (<a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/fishaudio_drama3.md">https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/fishaudio_drama3.md</a>); audio.cpp keeps the codec in F16.</p>
+<h2 id="rs-smaller-models">Smaller models</h2>
+<p>There is no "S2 mini". S1-mini (0.5B, CC-BY-NC-SA) is the previous generation: a bit worse (WER 0.011 vs 0.008) and uses <code>(angry)</code> style tags. <a href="https://huggingface.co/fishaudio/s1-mini">https://huggingface.co/fishaudio/s1-mini</a></p>
+<h2 id="rs-emotion-tags">Emotion tags</h2>
+<p>S2/S2 Pro use square brackets with free text, e.g. <code>[whisper]</code>, <code>[laughing]</code>, <code>[excited]</code>, <code>[sad]</code>, <code>[surprised]</code>, <code>[pause]</code>, <code>[low voice]</code>, <code>[very excited]</code> — 15 000+ tags. <a href="https://huggingface.co/fishaudio/s2-pro">https://huggingface.co/fishaudio/s2-pro</a> · <a href="https://docs.fish.audio/api-reference/emotion-reference">https://docs.fish.audio/api-reference/emotion-reference</a>
+Official tips: put the tag at the start of the sentence, combine (<code>[sad][whispering]</code>), add intensity (<code>[slightly sad]</code>), at most ~3 emotions per sentence. Spanish is "tier 2" (good, below English/Chinese/Japanese).
+<strong>In our listening tests the emotion already came from the text itself; we did not need tags</strong> (and did not evaluate them). A calm reference recording pulls everything toward calm.</p>
+<h2 id="rs-rtx-50xx-sm_120-notes">RTX 50xx (sm_120) notes</h2>
+<ul>
+<li>SGLang-Omni: "no kernel image" crash (flash-attention kernel only for Hopper), open issue: <a href="https://github.com/sgl-project/sglang-omni/issues/160">https://github.com/sgl-project/sglang-omni/issues/160</a>; workaround from the 5090 recipe <code>FISH_S2PRO_DISABLE_FLASH_ATTN_KVCACHE=1</code> + <code>sdpa</code>.</li>
+<li>Official repo needs PyTorch with CUDA 12.8+; with <code>--compile</code> on RTX 50 one report says <code>torch._inductor.config.triton.cudagraph_trees = False</code> fixes it: <a href="https://github.com/fishaudio/fish-speech/issues/919">https://github.com/fishaudio/fish-speech/issues/919</a>.</li>
+<li>audio.cpp on Windows: CUDA ≥ 12.4 (for sm_120 in practice 12.8+). We used 13.3.1 and <code>-CudaArchitectures "120a-real"</code>.</li>
+</ul>
+<h2 id="rs-what-we-did-with-it">What we did with it</h2>
+<p>We tried audio.cpp first (Q8 → Q6 → Q4). It won on memory and simplicity (single native binary, no Python/WSL for the model), and Q4 won on smoothness. The SGLang-Omni and INT8 paths stayed as plan B and were never needed.</p></main></div>
+<script>
+const K='fishguide.lang';let L='en';try{L=localStorage.getItem(K)||((navigator.language||'en').toLowerCase().startsWith('pt')?'pt':'en')}catch(e){}
+function setLang(l){L=l;document.querySelectorAll('[data-lang]').forEach(e=>e.hidden=e.dataset.lang!==l);
+document.querySelectorAll('.bar [data-set]').forEach(b=>b.classList.toggle('on',b.dataset.set===l));document.documentElement.lang=l==='pt'?'pt-BR':'en';
+try{localStorage.setItem(K,l)}catch(e){}}
+document.querySelectorAll('.bar [data-set]').forEach(b=>b.onclick=()=>setLang(b.dataset.set));
+document.querySelectorAll('pre').forEach(p=>{const b=document.createElement('button');b.className='cp';b.textContent='copy';
+b.onclick=()=>{navigator.clipboard.writeText(p.querySelector('code').innerText);b.textContent='copied';setTimeout(()=>b.textContent='copy',1400)};p.appendChild(b)});
+setLang(L);
+</script></body></html>

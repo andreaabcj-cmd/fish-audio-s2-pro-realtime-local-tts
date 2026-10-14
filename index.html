@@ -1,0 +1,460 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fish S2 Pro as a real-time local voice on a 16 GB GPU</title><meta name="description" content="Measured on one machine (Ryzen 7 5800X3D, RTX 5060 Ti 16 GB, Windows 11), October 2026 — by André, Claude and the open-source community."><style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#16202a;--mute:#5a6b7b;--line:#dfe5ec;--acc:#0a7d6b;--acc2:#e8f5f2;--code:#0f1b24;--codeink:#e6f1ee;--warn:#fff7e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e141a;--card:#151d25;--ink:#e6edf3;--mute:#9bb0c2;--line:#26323d;--acc:#4fd1b6;--acc2:#12302a;--code:#0a1015;--codeink:#d7efe8;--warn:#2b2410}}
+:root[data-theme=dark]{--bg:#0e141a;--card:#151d25;--ink:#e6edf3;--mute:#9bb0c2;--line:#26323d;--acc:#4fd1b6;--acc2:#12302a;--code:#0a1015;--codeink:#d7efe8;--warn:#2b2410}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc)}
+header.top{background:linear-gradient(135deg,#0a7d6b,#12507a);color:#fff;padding:40px 16px 34px}
+header.top{position:relative}header.top .in{max-width:1080px;margin:0 auto;padding-right:190px}.mascot{position:absolute;right:max(16px,calc(50% - 540px));top:50%;transform:translateY(-50%);border-radius:50%;border:3px solid rgba(255,255,255,.55)}@media (max-width:700px){header.top .in{padding-right:0}.mascot{position:static;transform:none;margin:14px 0 0 16px;display:block}}
+header.top h1{margin:0 0 8px;font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.2}
+header.top p{margin:0;opacity:.92;max-width:760px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.bar a,.bar button{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:999px;cursor:pointer;font:inherit;font-size:.9rem;text-decoration:none}
+.bar a:hover,.bar button:hover,.bar .on{background:#fff;color:#0a4f6b}
+.wrap{max-width:1080px;margin:0 auto;padding:22px 16px 60px;display:grid;grid-template-columns:230px 1fr;gap:30px}
+nav.toc{position:sticky;top:14px;align-self:start;font-size:.9rem;max-height:calc(100vh - 28px);overflow:auto}
+nav.toc ul{list-style:none;margin:0;padding:0}nav.toc li{margin:0}
+nav.toc a{display:block;padding:5px 10px;border-left:2px solid var(--line);color:var(--mute);text-decoration:none}
+nav.toc a:hover{color:var(--acc);border-color:var(--acc)}
+main{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 28px 28px;min-width:0}
+main h2{margin:2rem 0 .6rem;padding-top:.4rem;border-top:1px solid var(--line);font-size:1.45rem}
+main h2:first-of-type{border-top:0}
+main h3{margin:1.5rem 0 .4rem;font-size:1.15rem}
+blockquote{margin:1rem 0;padding:.7rem 1rem;background:var(--acc2);border-left:4px solid var(--acc);border-radius:0 8px 8px 0}
+blockquote p{margin:.35rem 0}
+table{border-collapse:collapse;width:100%;margin:1rem 0;display:block;overflow-x:auto;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--acc2)}
+code{background:var(--acc2);padding:.1em .35em;border-radius:5px;font-size:.88em}
+pre{position:relative;background:var(--code);color:var(--codeink);padding:14px 16px;border-radius:10px;overflow:auto;font-size:.86rem}
+pre code{background:none;padding:0;color:inherit}
+pre button.cp{position:absolute;top:6px;right:6px;font-size:.75rem;background:#ffffff22;color:#fff;border:1px solid #ffffff44;border-radius:6px;padding:2px 8px;cursor:pointer}
+.lang[hidden]{display:none}
+.samples{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:12px 0}
+.samples figure{margin:0;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.samples figcaption{font-weight:600;font-size:.9rem;margin-bottom:6px}
+.samples audio{width:100%}.samples blockquote{margin:.5rem 0 0;font-size:.85rem;padding:.4rem .7rem}
+footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font-size:.88rem}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav.toc{position:static;max-height:none}main{padding:4px 16px 22px}}
+</style></head><body><header class="top"><div class="in"><h1 data-lang="en">Fish Audio S2 Pro as a real-time local voice on a 16 GB GPU — next to a 12B LLM (Windows, RTX 5060 Ti)</h1><h1 data-lang="pt" hidden>Fish Audio S2 Pro como voz local em tempo real numa GPU de 16 GB — junto de um LLM de 12B (Windows, RTX 5060 Ti)</h1>
+<p data-lang="en">Measured on one machine (Ryzen 7 5800X3D, RTX 5060 Ti 16 GB, Windows 11), October 2026 — by André, Claude and the open-source community.</p><p data-lang="pt" hidden>Medido em uma máquina (Ryzen 7 5800X3D, RTX 5060 Ti 16 GB, Windows 11), outubro de 2026 — por André, Claude e a comunidade open source.</p><div class="bar"><a href="index.html" class="on">Guide · Guia</a><a href="research.html" class="">Research · Pesquisa</a><a href="data/">Data · Dados</a><a href="fish_tts_adapter.py">Adapter · Adaptador</a><button data-set="en">EN</button><button data-set="pt">PT-BR</button></div></div><img class="mascot" src="assets/ali_tchau.gif" alt="Ali waving" width="150" height="154"></header><div class="wrap"><nav class="toc"><div data-lang="en"><ul><li><a href="#en-1-test-machine">1. Test machine</a></li><li><a href="#en-2-getting-audiocpp-to-stream-fish-the-part-that-cost-us-the-most-time">2. Getting audio.cpp to stream Fish (the part that cost us the most time)</a></li><li><a href="#en-3-server-config-and-request">3. Server config and request</a></li><li><a href="#en-4-results">4. Results</a></li><li><a href="#en-5-bonus-making-the-llm-start-answering-sooner-ollama-llamacpp-sliding-window-models">5. Bonus: making the LLM start answering sooner (Ollama / llama.cpp, sliding-window models)</a></li><li><a href="#en-6-gotchas-quickly">6. Gotchas, quickly</a></li><li><a href="#en-7-not-measured-limits">7. Not measured / limits</a></li><li><a href="#en-8-license-note">8. License note</a></li><li><a href="#en-credits">Credits</a></li></ul></div><div data-lang="pt" hidden><ul><li><a href="#pt-1-maquina-de-teste">1. Máquina de teste</a></li><li><a href="#pt-2-fazer-o-audiocpp-dar-streaming-no-fish-o-que-mais-custou-tempo">2. Fazer o audio.cpp dar streaming no Fish (o que mais custou tempo)</a></li><li><a href="#pt-3-config-do-servidor-e-pedido">3. Config do servidor e pedido</a></li><li><a href="#pt-4-resultados">4. Resultados</a></li><li><a href="#pt-5-bonus-fazer-o-llm-comecar-a-responder-mais-cedo-ollama-llamacpp-modelos-de-janela-deslizante">5. Bônus: fazer o LLM começar a responder mais cedo (Ollama / llama.cpp, modelos de janela deslizante)</a></li><li><a href="#pt-6-armadilhas-em-resumo">6. Armadilhas, em resumo</a></li><li><a href="#pt-7-nao-medido-limites">7. Não medido / limites</a></li><li><a href="#pt-8-nota-de-licenca">8. Nota de licença</a></li><li><a href="#pt-creditos">Créditos</a></li></ul></div></nav><main><div data-lang="en">
+
+
+<p>Field notes from building a fully local voice assistant (Spanish, voice cloning from a short reference + transcript).
+Everything below was measured on <strong>one machine</strong>, in October 2026. Where something was <em>not</em> measured, it says so.</p>
+<blockquote>
+<p>🔊 <strong>Listen to the samples</strong> on the <a href="https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#en-listen">project page</a> or in <a href="samples/"><code>samples/</code></a> (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).</p>
+<p><strong>TL;DR</strong>
+* Fish S2 Pro runs fine in real time on a 16 GB consumer GPU <strong>alongside a 12B chat model</strong>, with the <em>Q4_K</em> GGUF.
+* First audio arrives in <strong>~0.15–0.35 s</strong> with streaming (0.5 s through our HTTP adapter), but generation runs at only <strong>~1.0× the audio duration</strong>
+  (Q4 median; Q8 ~1.12×) — so you need a small playback buffer (we use 0.8 s) or you get clicks.
+* <strong>audio.cpp release 0.9.1 cannot stream Fish</strong> even though its README says so. Build from source (≥ commit <code>b0feeff</code>, 13 Oct 2026).
+* Separate win for the LLM side: warming the <em>stable prefix</em> of the prompt cut the per-answer prompt re-read from <strong>3.4 s → ~1.2 s</strong>.</p>
+</blockquote>
+<h2 id="en-1-test-machine">1. Test machine</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU / RAM</td>
+<td>Ryzen 7 5800X3D / 64 GB</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>GeForce RTX 5060 Ti <strong>16 GB</strong> (Blackwell, compute 12.0), Windows 11 Pro, normal desktop running (~2 GB of VRAM used by apps)</td>
+</tr>
+<tr>
+<td>Chat model</td>
+<td><code>gemma4:12b</code> in Ollama 0.35.1 (8 GB file incl. vision projector + MTP drafter), KV cache <code>q8_0</code>, <code>num_ctx 8192</code>, batch 512</td>
+</tr>
+<tr>
+<td>TTS</td>
+<td>Fish Audio S2 Pro GGUF via <a href="https://github.com/0xShug0/audio.cpp">audio.cpp</a> (CUDA), Q4_K / Q6_K / Q8_0</td>
+</tr>
+<tr>
+<td>Speech-to-text, etc.</td>
+<td>other models resident too; not covered here</td>
+</tr>
+</tbody>
+</table>
+<h2 id="en-2-getting-audiocpp-to-stream-fish-the-part-that-cost-us-the-most-time">2. Getting audio.cpp to stream Fish (the part that cost us the most time)</h2>
+<p><strong>Symptom:</strong> with the Windows CUDA release <code>v0.9.1</code> (7 Oct 2026), a server config with <code>"mode": "streaming"</code> for the Fish model fails at start:</p>
+<pre><code>audiocpp_server failed: Fish Audio S2-Pro supports offline TTS sessions
+</code></pre>
+<p>The <code>fish_audio.md</code> doc and README table say streaming is supported, but that landed in the source tree <strong>after</strong> 0.9.1.
+(<code>--mode streaming</code> in <code>audiocpp_cli</code> fails the same way.) Offline mode works but the first sound only arrives when the <em>whole</em> utterance is
+done — ~30 s of waiting for a 30 s answer (RTF 0.9–1.1) — useless for conversation.</p>
+<p><strong>Fix: build the server from source</strong> (commit <code>b0feeff</code>, 13 Oct 2026 or newer). Nothing needs to be installed on <code>C:</code>:</p>
+<ol>
+<li><strong>MSVC</strong>: Visual Studio 2022 <em>Build Tools</em> with the C++ workload (we had 14.44). CMake comes with it.</li>
+<li><strong>CUDA without the 3 GB installer</strong>: NVIDIA publishes the toolkit as redistributable zips:
+   <code>https://developer.download.nvidia.com/compute/cuda/redist/redistrib_13.3.1.json</code> lists them. We downloaded the Windows-x86_64 zips for
+   <code>cuda_nvcc, cuda_cudart, cccl, cuda_crt, cuda_nvrtc, libnvvm, libcublas, libcufft, cuda_profiler_api, libnvjitlink, libnvfatbin,
+   libnvptxcompiler, cuda_nvtx, cuda_cuxxfilt, libcurand, libcusparse, libcusolver</code> and merged them into one folder (3.9 GB total — a
+   superset; we did not try to find the minimum). Note <code>cccl</code> and <code>libnvvm</code> have different manifest keys than you might expect.</li>
+<li><strong>Build</strong> (≈ 20–25 min, ~1200 steps). The repo's script needs a PowerShell execution-policy bypass:</li>
+</ol>
+<p><code>powershell
+   $env:CUDA_PATH = "D:\cuda\toolkit"; $env:CUDAToolkit_ROOT = $env:CUDA_PATH
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 `
+       -Preset windows-cuda-release -Target audiocpp_server -CudaArchitectures "120a-real"</code>
+   <code>120a-real</code> is for Blackwell cards (RTX 50xx) only — it makes the build faster but the binary will not run on other GPUs.
+4. The result is a <strong>single <code>audiocpp_server.exe</code></strong>, no DLLs. Copy the DLLs (<code>ggml*.dll</code>, <code>cublas*.dll</code>, <code>cudart*.dll</code>, …) from the
+   release zip's <code>bin</code> folder next to it. <code>--version</code> should print your build, and the Fish streaming config should now start.</p>
+<p><strong>GGUF files:</strong> Q8_0 comes from the audio.cpp GGUF repo (<code>audio-cpp/audio.cpp-gguf</code>); Q6_K and Q4_K are produced with the project's own
+recipe — read <code>docs/proposals/fish_audio_quantization_recipe.md</code> in the source tree. The key point is that the small "fast acoustic
+decoder" tensors must stay at original precision (<code>--keep-type 'model_weights/fast_*=orig'</code>) and the token metadata sidecar must be
+extracted from the Q8 file; naive quantization gives garbled audio. File sizes: Q8 6.3 GB, Q6 5.4 GB, Q4 4.5 GB.</p>
+<h2 id="en-3-server-config-and-request">3. Server config and request</h2>
+<p><code>server.json</code> (voice cloning = a preset with a reference wav <strong>and its exact transcript</strong>):</p>
+<pre><code class="language-json">{ &quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: 18190, &quot;backend&quot;: &quot;cuda&quot;, &quot;device&quot;: 0, &quot;busy_timeout_ms&quot;: 600000,
+  &quot;models&quot;: [{ &quot;id&quot;: &quot;fish&quot;, &quot;family&quot;: &quot;fish_audio&quot;, &quot;task&quot;: &quot;tts&quot;, &quot;mode&quot;: &quot;streaming&quot;,
+               &quot;path&quot;: &quot;D:/models/Fish-Audio-S2-Pro-GGUF/fish-audio-s2-pro-q4_k.gguf&quot;,
+               &quot;model_spec_override&quot;: &quot;D:/audiocpp/src/model_specs&quot;,
+               &quot;session_options&quot;: { &quot;fish_audio.reference_cache_slots&quot;: &quot;4&quot; },
+               &quot;voice_presets&quot;: { &quot;my_voice&quot;: { &quot;voice_ref&quot;: &quot;D:/voices/ref.wav&quot;, &quot;reference_text&quot;: &quot;exact transcript of ref.wav&quot; } } }] }
+</code></pre>
+<p>(<code>model_spec_override</code> is what we ran with; we did not test whether a new enough binary needs it.)</p>
+<p>Request: <code>POST /v1/audio/speech</code> with <code>{"model":"fish","input":"...","voice":"my_voice","response_format":"pcm","stream_format":"sse"}</code>.
+You get SSE events; <code>speech.audio.delta</code> carries <strong>base64 PCM16 mono at 44.1 kHz</strong>. Closing the HTTP connection stops generation
+(measured: the next request started speaking in 0.65 s after an interruption).</p>
+<p>Our adapter (<a href="fish_tts_adapter.py"><code>fish_tts_adapter.py</code></a>, ~200 lines, standard library + numpy/scipy/requests) turns that into
+"POST text → raw 24 kHz PCM16 as it is generated", and also: starts/stops audio.cpp, <code>/sleep</code> + <code>/wake</code> to free VRAM, and a Windows <em>Job Object</em> so
+audio.cpp dies with the adapter (an orphaned server keeps ~5 GB of VRAM). Tested: first byte 0.5 s.
+Two details worth copying: streaming 44.1→24 kHz with <code>resample_poly</code> <strong>in blocks with context on both sides</strong> (bit-identical to a one-shot
+resample, verified with several chunk sizes — no seams), and a soft limiter instead of hard clipping.</p>
+<h2 id="en-4-results">4. Results</h2>
+<h3 id="en-41-tts-alone-gpu-otherwise-idle-streaming">4.1 TTS alone (GPU otherwise idle), streaming</h3>
+<p>38 utterances per GGUF (2 voices × 19 texts, 2–34 s of speech). "Generation ÷ audio" &gt; 1 means slower than real time.</p>
+<table>
+<thead>
+<tr>
+<th>GGUF</th>
+<th>first audio</th>
+<th>generation time ÷ audio time (range, median)</th>
+<th>peak VRAM incl. ~2 GB desktop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q8_0</td>
+<td>0.15–0.31 s</td>
+<td>0.98–1.27, median 1.12</td>
+<td>8.4 GB</td>
+</tr>
+<tr>
+<td>Q6_K</td>
+<td>0.17–0.35 s</td>
+<td>0.98–1.19, median 1.09</td>
+<td>7.7 GB</td>
+</tr>
+<tr>
+<td><strong>Q4_K</strong></td>
+<td>0.14–0.31 s</td>
+<td>0.85–1.08, <strong>median 1.00</strong></td>
+<td><strong>7.0 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>How much <em>start delay</em> you need so playback never runs dry, for ~19 s answers (measured from the SSE arrival times):
+Q8 1.0–2.5 s, Q4 0.2–0.5 s. So <strong>Q4 is not only the smallest, it is the one that plays smoothly</strong> — on our ears (Spanish, one listener) all
+three sounded equally good; the listener chose Q4 for efficiency.
+Emotional tone came out of the text itself (punctuation, words); we did <strong>not</strong> need inline emotion tags and did not evaluate them.</p>
+<h3 id="en-42-full-pipeline-real-llm-real-tts-simulated-sound-card-that-counts-under-runs">4.2 Full pipeline (real LLM + real TTS, simulated sound card that counts under-runs)</h3>
+<p>Q4, short conversational answers (~8–10 s of speech each). "Cushion" = audio buffered before playback starts; "queue" = how far generation may run ahead.</p>
+<table>
+<thead>
+<tr>
+<th>cushion / queue</th>
+<th>audible gaps</th>
+<th>speech tested</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.5 s / 6</td>
+<td><strong>1</strong></td>
+<td>48 s</td>
+</tr>
+<tr>
+<td>0.65 s / 60</td>
+<td>0</td>
+<td>52 s</td>
+</tr>
+<tr>
+<td><strong>0.8 s / 60</strong> (our setting)</td>
+<td>0 / 0 / 0</td>
+<td>50 + 51 + 48 s</td>
+</tr>
+<tr>
+<td>1.1 s / 60</td>
+<td>0</td>
+<td>52 s</td>
+</tr>
+</tbody>
+</table>
+<p>With Q6 and the small cushion, a real session logged <strong>8 gaps in one 11 s answer</strong> — those are the "little clicks" a listener reports.
+Time from the request to the first sound: <strong>~1.9–2.4 s median</strong> across those runs (≈0.7 s of that is the LLM writing its first sentence).</p>
+<h3 id="en-43-vram">4.3 VRAM</h3>
+<p><code>gemma4:12b</code> (≈8.5 GB dedicated) + Fish Q4 + Windows desktop: <strong>~14.1 GB of 16 GB used</strong> (it was ~15.7 GB with the TTS we replaced).</p>
+<h2 id="en-5-bonus-making-the-llm-start-answering-sooner-ollama-llamacpp-sliding-window-models">5. Bonus: making the LLM start answering sooner (Ollama / llama.cpp, sliding-window models)</h2>
+<p>Before: every answer re-read the whole ~5 000-token prompt (<strong>3.4 s</strong>) although only the last turn had changed. With <code>gemma4</code> (sliding-window
+attention) llama.cpp can only reuse a cached prefix through <em>context checkpoints</em>, and it only creates them at the <strong>end of a request</strong> — i.e.
+after the part that changes every turn, so they were never usable. (The server log shows <code>forcing full prompt re-processing due to lack of cache data</code>.)</p>
+<p>What worked (Ollama 0.35.1, no environment variables needed): after each answer, once speech has finished, send <strong>one extra request containing only the
+stable prefix</strong> (system prompt + conversation history, <em>without</em> the volatile "current context" block and <em>without</em> the new user message) with
+<code>num_predict: 1</code>. The checkpoint now lands exactly where the next turn's prompt diverges.
+Keep tools, <code>num_ctx</code>, <code>num_batch</code>, <code>keep_alive</code> identical to the real requests or the model reloads. Put everything that changes per turn (clock, retrieved
+memories) <strong>after</strong> the history.</p>
+<ul>
+<li>Measured on a replayed 8-turn conversation: re-read before answering <strong>3.4 s → ~1.2 s</strong> (warm-up itself ~0.3–0.7 s while idle); in live use 1.3–1.7 s.</li>
+<li>Things that did <strong>not</strong> help: <code>LLAMA_ARG_CHECKPOINT_MIN_SPACING_NT=256</code> (no effect); <code>LLAMA_ARG_SWA_FULL=1</code> works but costs ~2.2 GB of VRAM.</li>
+<li>Moving the user profile <em>before</em> the history would save another ~0.6 s, but with this 12B model it made recall of the <em>current conversation</em> worse
+  (asked "what did I say her name was?" it answered from the profile: 0/6 correct vs 6/6). Check for this kind of regression if you reorder prompts.</li>
+<li><code>OLLAMA_DEBUG=1</code> made prompt reads ~7× slower in our runs (23 s vs 3 s); don't leave it on while measuring.</li>
+<li>Not tested: newer Ollama (0.40.x) — its notes were mostly about Apple/MLX.</li>
+</ul>
+<h2 id="en-6-gotchas-quickly">6. Gotchas, quickly</h2>
+<ul>
+<li>Don't trust "streaming supported" in a README: grep the release for it, or just try a config with <code>"mode":"streaming"</code>.</li>
+<li>Streaming gives <em>time to first audio</em>, not speed. If generation is ≥ 1.0× audio duration you still need a buffer.</li>
+<li>Kill orphaned <code>audiocpp_server.exe</code> processes — each holds ~5 GB of VRAM.</li>
+<li>First start after boot was slow (≈57 s, cold disk read); afterwards 10–20 s. Waking an adapter that put audio.cpp to sleep took ≈10 s.</li>
+<li>In PowerShell scripts blocked by policy, use <code>-ExecutionPolicy Bypass</code> for that command only.</li>
+<li>If you run Git Bash, backslashes inside heredocs get eaten (we corrupted a Windows path in a doc that way).</li>
+</ul>
+<h2 id="en-7-not-measured-limits">7. Not measured / limits</h2>
+<p>Other languages; other voices; word-error-rate or any objective quality metric (only one human listener); behaviour while gaming or rendering at the same time;
+long sessions (hours); audio.cpp versions newer than <code>b0feeff</code>; non-Blackwell GPUs.</p>
+<h2 id="en-8-license-note">8. License note</h2>
+<p>The Fish Audio S2 Pro model card restricts the weights to <strong>non-commercial</strong> use — check the current terms before building anything beyond personal use.
+audio.cpp, llama.cpp and Ollama have their own licenses.</p>
+<h2 id="en-credits">Credits</h2>
+<p>This was a <strong>team effort</strong>:</p>
+<ul>
+<li><strong>André</strong> (<a href="https://github.com/andreaabcj-cmd">@andreaabcj-cmd</a>) — product direction, the hardware, every decision, and the listening tests (the only human ears behind the "sounds good" claims).</li>
+<li><strong>Claude</strong> (Anthropic, via Claude Code) — engineering, measurements, research, and this write-up. All numbers come from scripts run on the machine above; raw data is in <a href="data/"><code>data/</code></a>.</li>
+<li><strong>The open-source community</strong>, whose work made it possible and whose findings we read before measuring anything (<a href="RESEARCH.md">RESEARCH.md</a>): the
+  <a href="https://github.com/0xShug0/audio.cpp">audio.cpp</a> project and its Fish quantization recipe, <a href="https://fish.audio">Fish Audio</a> and the <code>fish-speech</code> issue threads,
+  <a href="https://github.com/rodrigomatta/s2.cpp">s2.cpp</a> and the GGUF publishers on Hugging Face, SGLang-Omni, llama.cpp (and the maintainers who documented the sliding-window checkpoint behaviour), Ollama, and everyone who posted benchmarks and bug reports.</li>
+</ul>
+<p>Raw measurements: <a href="data/"><code>data/</code></a> · What we read first: <a href="RESEARCH.md">RESEARCH.md</a> · Example adapter: <a href="fish_tts_adapter.py"><code>fish_tts_adapter.py</code></a>.</p><section class="samples-sec"><h2 id="en-listen">Listen</h2><p>Spanish samples from the setup in this guide (Fish S2 Pro GGUF in audio.cpp streaming, RTX 5060 Ti). The voice was <b>created by the model itself</b> (no third-party recording): its first sentence became the reference for the others. Automatically checked — speech recognition reads every sample back with 100% word match and no emotion tag is spoken aloud — but <b>not yet curated by a human ear</b>. Generated with non-commercial model weights; 'first audio' is time to first sound in streaming.</p><h3>Q4_K — the setting we use</h3><div class="samples"><figure><figcaption>Neutral · 6.5 s · 1st audio 0.25 s</figcaption><audio controls preload="none" src="samples/q4_k_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Question / surprise · 4.0 s · 1st audio 0.18 s</figcaption><audio controls preload="none" src="samples/q4_k_sorpresa.wav"></audio><blockquote lang="es">¿De verdad? No me lo esperaba para nada. ¿Y cómo fue que pasó?</blockquote></figure><figure><figcaption>Long answer · 13.1 s · 1st audio 0.26 s</figcaption><audio controls preload="none" src="samples/q4_k_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure></div><h3>Emotion from the text alone vs. with an inline tag (Q4_K)</h3><div class="samples"><figure><figcaption>Excited — no tag · 3.8 s · 1st audio 0.16 s</figcaption><audio controls preload="none" src="samples/q4_k_buena_noticia.wav"></audio><blockquote lang="es">¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!</blockquote></figure><figure><figcaption>Excited — [very excited] · 3.9 s · 1st audio 0.17 s</figcaption><audio controls preload="none" src="samples/q4_k_buena_noticia_tag.wav"></audio><blockquote lang="es">¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!</blockquote></figure><figure><figcaption>Sad — no tag · 3.8 s · 1st audio 0.17 s</figcaption><audio controls preload="none" src="samples/q4_k_lo_siento.wav"></audio><blockquote lang="es">Lo siento mucho. Parece que fue un día muy difícil para ti.</blockquote></figure><figure><figcaption>Sad — [sad] · 3.9 s · 1st audio 0.21 s</figcaption><audio controls preload="none" src="samples/q4_k_lo_siento_tag.wav"></audio><blockquote lang="es">Lo siento mucho. Parece que fue un día muy difícil para ti.</blockquote></figure></div><h3>Q8_0 vs Q4_K — same text</h3><div class="samples"><figure><figcaption>Q8_0 — neutral · 6.4 s · 1st audio 0.40 s</figcaption><audio controls preload="none" src="samples/q8_0_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Q4_K — neutral · 6.5 s · 1st audio 0.25 s</figcaption><audio controls preload="none" src="samples/q4_k_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Q8_0 — long answer · 12.9 s · 1st audio 0.35 s</figcaption><audio controls preload="none" src="samples/q8_0_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure><figure><figcaption>Q4_K — long answer · 13.1 s · 1st audio 0.26 s</figcaption><audio controls preload="none" src="samples/q4_k_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure></div></section></div><div data-lang="pt" hidden>
+
+
+<p>Notas de campo de quem montou um assistente de voz 100% local (espanhol, clonagem de voz a partir de uma referência curta + transcrição).
+Tudo foi medido em <strong>uma única máquina</strong>, em outubro de 2026. O que <em>não</em> foi medido está dito como tal.</p>
+<blockquote>
+<p>🔊 <strong>Escute as amostras</strong> na <a href="https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#pt-escute">página do projeto</a> ou em <a href="samples/"><code>samples/</code></a> (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).</p>
+<p><strong>Resumo</strong>
+* O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB <strong>junto de um modelo de chat de 12B</strong>, usando o GGUF <strong>Q4_K</strong>.
+* O primeiro áudio sai em <strong>~0,15–0,35 s</strong> com streaming (0,5 s pelo nosso adaptador HTTP), mas a geração é só <strong>~1,0× a duração do áudio</strong>
+  (mediana do Q4; Q8 ~1,12×) — é preciso um pequeno colchão de reprodução (usamos 0,8 s), senão aparecem estalos.
+* <strong>O audio.cpp release 0.9.1 não faz streaming com o Fish</strong>, embora o README diga que sim. Compile do código-fonte (≥ commit <code>b0feeff</code>, 13/10/2026).
+* Ganho separado no LLM: "aquecer" o <em>prefixo estável</em> do prompt reduziu a releitura por resposta de <strong>3,4 s → ~1,2 s</strong>.</p>
+</blockquote>
+<h2 id="pt-1-maquina-de-teste">1. Máquina de teste</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU / RAM</td>
+<td>Ryzen 7 5800X3D / 64 GB</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>GeForce RTX 5060 Ti <strong>16 GB</strong> (Blackwell, compute 12.0), Windows 11 Pro, desktop normal aberto (~2 GB de VRAM usados por apps)</td>
+</tr>
+<tr>
+<td>Modelo de chat</td>
+<td><code>gemma4:12b</code> no Ollama 0.35.1 (arquivo de 8 GB com projetor de visão + rascunhador MTP), KV cache <code>q8_0</code>, <code>num_ctx 8192</code>, lote 512</td>
+</tr>
+<tr>
+<td>TTS</td>
+<td>Fish Audio S2 Pro GGUF via <a href="https://github.com/0xShug0/audio.cpp">audio.cpp</a> (CUDA), Q4_K / Q6_K / Q8_0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pt-2-fazer-o-audiocpp-dar-streaming-no-fish-o-que-mais-custou-tempo">2. Fazer o audio.cpp dar streaming no Fish (o que mais custou tempo)</h2>
+<p><strong>Sintoma:</strong> com o release <code>v0.9.1</code> do Windows CUDA (7/10/2026), uma config com <code>"mode": "streaming"</code> para o Fish falha ao iniciar:</p>
+<pre><code>audiocpp_server failed: Fish Audio S2-Pro supports offline TTS sessions
+</code></pre>
+<p>A documentação <code>fish_audio.md</code> e a tabela do README dizem que há streaming, mas isso entrou no código <strong>depois</strong> da 0.9.1
+(<code>audiocpp_cli --mode streaming</code> falha igual). O modo offline funciona, mas o primeiro som só sai quando a fala <em>inteira</em> termina —
+~30 s de espera para uma resposta de 30 s — inútil para conversa.</p>
+<p><strong>Solução: compilar o servidor</strong> (commit <code>b0feeff</code>, 13/10/2026 ou mais novo). Nada precisa ser instalado no <code>C:</code>:</p>
+<ol>
+<li><strong>MSVC</strong>: <em>Build Tools</em> do Visual Studio 2022 com o pacote C++ (usamos 14.44). O CMake vem junto.</li>
+<li><strong>CUDA sem o instalador de 3 GB</strong>: a NVIDIA publica o toolkit em zips redistribuíveis; o manifesto fica em
+   <code>https://developer.download.nvidia.com/compute/cuda/redist/redistrib_13.3.1.json</code>. Baixamos os zips Windows-x86_64 de
+   <code>cuda_nvcc, cuda_cudart, cccl, cuda_crt, cuda_nvrtc, libnvvm, libcublas, libcufft, cuda_profiler_api, libnvjitlink, libnvfatbin,
+   libnvptxcompiler, cuda_nvtx, cuda_cuxxfilt, libcurand, libcusparse, libcusolver</code> e juntamos tudo numa pasta (3,9 GB — um
+   superconjunto; não procuramos o mínimo). Atenção: <code>cccl</code> e <code>libnvvm</code> têm chaves diferentes das que você imaginaria no manifesto.</li>
+<li><strong>Compilar</strong> (≈ 20–25 min, ~1200 etapas). O script do repositório precisa de bypass da política de execução do PowerShell:</li>
+</ol>
+<p><code>powershell
+   $env:CUDA_PATH = "D:\cuda\toolkit"; $env:CUDAToolkit_ROOT = $env:CUDA_PATH
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 `
+       -Preset windows-cuda-release -Target audiocpp_server -CudaArchitectures "120a-real"</code>
+   <code>120a-real</code> serve só para placas Blackwell (RTX 50xx): acelera a compilação, mas o binário não roda em outras GPUs.
+4. O resultado é <strong>um único <code>audiocpp_server.exe</code></strong>, sem DLLs. Copie as DLLs (<code>ggml*.dll</code>, <code>cublas*.dll</code>, <code>cudart*.dll</code>…) da pasta <code>bin</code> do
+   zip do release para junto dele. <code>--version</code> deve mostrar o seu build, e a config de streaming do Fish deve passar a iniciar.</p>
+<p><strong>Arquivos GGUF:</strong> o Q8_0 vem do repositório de GGUFs do audio.cpp (<code>audio-cpp/audio.cpp-gguf</code>); Q6_K e Q4_K são gerados com a receita do próprio
+projeto — leia <code>docs/proposals/fish_audio_quantization_recipe.md</code> na árvore de código. O ponto-chave: os tensores pequenos do "decodificador
+acústico rápido" precisam ficar na precisão original (<code>--keep-type 'model_weights/fast_*=orig'</code>) e o arquivo de metadados dos tokens deve ser
+extraído do Q8; quantizar "no ingênuo" gera áudio embaralhado. Tamanhos: Q8 6,3 GB, Q6 5,4 GB, Q4 4,5 GB.</p>
+<h2 id="pt-3-config-do-servidor-e-pedido">3. Config do servidor e pedido</h2>
+<p><code>server.json</code> (clonagem de voz = um preset com wav de referência <strong>e a transcrição exata dele</strong>):</p>
+<pre><code class="language-json">{ &quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: 18190, &quot;backend&quot;: &quot;cuda&quot;, &quot;device&quot;: 0, &quot;busy_timeout_ms&quot;: 600000,
+  &quot;models&quot;: [{ &quot;id&quot;: &quot;fish&quot;, &quot;family&quot;: &quot;fish_audio&quot;, &quot;task&quot;: &quot;tts&quot;, &quot;mode&quot;: &quot;streaming&quot;,
+               &quot;path&quot;: &quot;D:/models/Fish-Audio-S2-Pro-GGUF/fish-audio-s2-pro-q4_k.gguf&quot;,
+               &quot;model_spec_override&quot;: &quot;D:/audiocpp/src/model_specs&quot;,
+               &quot;session_options&quot;: { &quot;fish_audio.reference_cache_slots&quot;: &quot;4&quot; },
+               &quot;voice_presets&quot;: { &quot;minha_voz&quot;: { &quot;voice_ref&quot;: &quot;D:/voices/ref.wav&quot;, &quot;reference_text&quot;: &quot;transcrição exata de ref.wav&quot; } } }] }
+</code></pre>
+<p>(<code>model_spec_override</code> é o que usamos; não testamos se um binário novo o dispensa.)</p>
+<p>Pedido: <code>POST /v1/audio/speech</code> com <code>{"model":"fish","input":"...","voice":"minha_voz","response_format":"pcm","stream_format":"sse"}</code>.
+Vêm eventos SSE; <code>speech.audio.delta</code> traz <strong>PCM16 mono em base64 a 44,1 kHz</strong>. Fechar a conexão HTTP interrompe a geração
+(medido: depois de uma interrupção, o pedido seguinte voltou a falar em 0,65 s).</p>
+<p>Nosso adaptador (<a href="fish_tts_adapter.py"><code>fish_tts_adapter.py</code></a>, ~200 linhas, biblioteca padrão + numpy/scipy/requests) transforma isso em
+"POST do texto → PCM16 cru a 24 kHz conforme é gerado", e ainda: liga/desliga o audio.cpp, <code>/sleep</code> + <code>/wake</code> para liberar VRAM, e um <em>Job Object</em> do Windows
+para o audio.cpp morrer junto com o adaptador (um servidor órfão segura ~5 GB de VRAM). Testado: primeiro byte em 0,5 s.
+Dois detalhes que valem copiar: conversão 44,1→24 kHz em streaming com <code>resample_poly</code> <strong>em blocos com contexto dos dois lados</strong> (idêntica bit a bit
+à conversão de uma vez, verificada com vários tamanhos de bloco — sem emendas) e um limitador suave em vez de corte seco.</p>
+<h2 id="pt-4-resultados">4. Resultados</h2>
+<h3 id="pt-41-so-o-tts-gpu-livre-streaming">4.1 Só o TTS (GPU livre), streaming</h3>
+<p>38 falas por GGUF (2 vozes × 19 textos, de 2 a 34 s de fala). "Geração ÷ áudio" &gt; 1 significa mais lento que o tempo real.</p>
+<table>
+<thead>
+<tr>
+<th>GGUF</th>
+<th>primeiro áudio</th>
+<th>tempo de geração ÷ tempo do áudio (faixa, mediana)</th>
+<th>pico de VRAM com ~2 GB de desktop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q8_0</td>
+<td>0,15–0,31 s</td>
+<td>0,98–1,27, mediana 1,12</td>
+<td>8,4 GB</td>
+</tr>
+<tr>
+<td>Q6_K</td>
+<td>0,17–0,35 s</td>
+<td>0,98–1,19, mediana 1,09</td>
+<td>7,7 GB</td>
+</tr>
+<tr>
+<td><strong>Q4_K</strong></td>
+<td>0,14–0,31 s</td>
+<td>0,85–1,08, <strong>mediana 1,00</strong></td>
+<td><strong>7,0 GB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Atraso inicial necessário para a reprodução nunca secar, em respostas de ~19 s (medido pelos tempos de chegada do SSE):
+Q8 1,0–2,5 s, Q4 0,2–0,5 s. Ou seja, <strong>o Q4 não é só o menor: é o que toca mais redondo.</strong> No ouvido (espanhol, um único ouvinte) os três
+soaram igualmente bons; o ouvinte escolheu o Q4 por eficiência.
+O tom emocional saiu do próprio texto (pontuação, palavras); <strong>não</strong> precisamos de marcas de emoção inline e não as avaliamos.</p>
+<h3 id="pt-42-pipeline-completo-llm-real-tts-real-placa-de-som-simulada-que-conta-falhas">4.2 Pipeline completo (LLM real + TTS real, placa de som simulada que conta falhas)</h3>
+<p>Q4, respostas curtas de conversa (~8–10 s de fala cada). "Colchão" = áudio acumulado antes de começar a tocar; "fila" = quanto a geração pode adiantar.</p>
+<table>
+<thead>
+<tr>
+<th>colchão / fila</th>
+<th>falhas audíveis</th>
+<th>fala testada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0,5 s / 6</td>
+<td><strong>1</strong></td>
+<td>48 s</td>
+</tr>
+<tr>
+<td>0,65 s / 60</td>
+<td>0</td>
+<td>52 s</td>
+</tr>
+<tr>
+<td><strong>0,8 s / 60</strong> (nossa config)</td>
+<td>0 / 0 / 0</td>
+<td>50 + 51 + 48 s</td>
+</tr>
+<tr>
+<td>1,1 s / 60</td>
+<td>0</td>
+<td>52 s</td>
+</tr>
+</tbody>
+</table>
+<p>Com o Q6 e o colchão pequeno, uma sessão real registrou <strong>8 falhas numa única resposta de 11 s</strong> — são os "estalinhos" que o ouvinte relatou.
+Tempo do pedido até o primeiro som: <strong>~1,9–2,4 s de mediana</strong> nessas rodadas (≈0,7 s disso é o LLM escrevendo a primeira frase).</p>
+<h3 id="pt-43-vram">4.3 VRAM</h3>
+<p><code>gemma4:12b</code> (≈8,5 GB dedicados) + Fish Q4 + desktop do Windows: <strong>~14,1 GB dos 16 GB</strong> (eram ~15,7 GB com o TTS que substituímos).</p>
+<h2 id="pt-5-bonus-fazer-o-llm-comecar-a-responder-mais-cedo-ollama-llamacpp-modelos-de-janela-deslizante">5. Bônus: fazer o LLM começar a responder mais cedo (Ollama / llama.cpp, modelos de janela deslizante)</h2>
+<p>Antes: cada resposta relia o prompt inteiro de ~5 000 tokens (<strong>3,4 s</strong>) embora só o último turno tivesse mudado. No <code>gemma4</code> (atenção de janela
+deslizante) o llama.cpp só consegue reaproveitar um prefixo em cache por meio de <em>context checkpoints</em>, e só os cria no <strong>fim de um pedido</strong> — ou seja,
+depois da parte que muda a cada turno, então nunca serviam. (O log do servidor mostra <code>forcing full prompt re-processing due to lack of cache data</code>.)</p>
+<p>O que funcionou (Ollama 0.35.1, sem variável de ambiente): depois de cada resposta, quando a fala termina, mandar <strong>um pedido extra só com o prefixo
+estável</strong> (prompt de sistema + histórico, <em>sem</em> o bloco volátil de "contexto atual" e <em>sem</em> a nova mensagem do usuário) com <code>num_predict: 1</code>.
+O checkpoint passa a cair exatamente onde o prompt do próximo turno diverge.
+Mantenha ferramentas, <code>num_ctx</code>, <code>num_batch</code> e <code>keep_alive</code> idênticos aos pedidos reais, ou o modelo recarrega. Coloque tudo que muda a cada turno
+(relógio, memórias recuperadas) <strong>depois</strong> do histórico.</p>
+<ul>
+<li>Medido numa conversa de 8 turnos reproduzida: releitura antes de responder <strong>3,4 s → ~1,2 s</strong> (o aquecimento leva ~0,3–0,7 s, com o assistente parado); no uso real 1,3–1,7 s.</li>
+<li>O que <strong>não</strong> ajudou: <code>LLAMA_ARG_CHECKPOINT_MIN_SPACING_NT=256</code> (sem efeito); <code>LLAMA_ARG_SWA_FULL=1</code> funciona, mas custa ~2,2 GB de VRAM.</li>
+<li>Pôr o perfil do usuário <em>antes</em> do histórico pouparia mais ~0,6 s, mas com este 12B piorou a lembrança da <em>conversa atual</em>
+  (perguntado "como te disse que ela se chamava?", respondia pelo perfil: 0/6 certas contra 6/6). Teste esse tipo de regressão se reordenar prompts.</li>
+<li><code>OLLAMA_DEBUG=1</code> deixou a leitura do prompt ~7× mais lenta nas nossas rodadas (23 s contra 3 s); não deixe ligado ao medir.</li>
+<li>Não testado: Ollama mais novo (0.40.x) — as notas dele eram sobretudo de Apple/MLX.</li>
+</ul>
+<h2 id="pt-6-armadilhas-em-resumo">6. Armadilhas, em resumo</h2>
+<ul>
+<li>Não confie em "streaming suportado" no README: procure no release, ou teste uma config com <code>"mode":"streaming"</code>.</li>
+<li>Streaming dá <em>tempo até o primeiro áudio</em>, não velocidade. Se a geração é ≥ 1,0× a duração do áudio, ainda precisa de colchão.</li>
+<li>Mate processos <code>audiocpp_server.exe</code> órfãos — cada um segura ~5 GB de VRAM.</li>
+<li>A primeira subida depois do boot foi lenta (≈57 s, disco frio); depois 10–20 s. Acordar um adaptador que pôs o audio.cpp para dormir levou ≈10 s.</li>
+<li>Se a política do PowerShell bloquear scripts, use <code>-ExecutionPolicy Bypass</code> só naquele comando.</li>
+<li>No Git Bash, barras invertidas em heredocs são comidas (corrompemos um caminho do Windows num documento assim).</li>
+</ul>
+<h2 id="pt-7-nao-medido-limites">7. Não medido / limites</h2>
+<p>Outros idiomas; outras vozes; taxa de erro de palavras ou qualquer métrica objetiva de qualidade (só um ouvinte humano); comportamento jogando ou renderizando ao mesmo tempo;
+sessões longas (horas); versões do audio.cpp mais novas que <code>b0feeff</code>; GPUs que não sejam Blackwell.</p>
+<h2 id="pt-8-nota-de-licenca">8. Nota de licença</h2>
+<p>O cartão do modelo Fish Audio S2 Pro restringe os pesos a uso <strong>não comercial</strong> — confira os termos atuais antes de construir algo além de uso pessoal.
+audio.cpp, llama.cpp e Ollama têm licenças próprias.</p>
+<h2 id="pt-creditos">Créditos</h2>
+<p>Isto foi um <strong>trabalho de equipe</strong>:</p>
+<ul>
+<li><strong>André</strong> (<a href="https://github.com/andreaabcj-cmd">@andreaabcj-cmd</a>) — direção do produto, o hardware, todas as decisões e os testes de escuta (os únicos ouvidos humanos por trás dos "soa bem").</li>
+<li><strong>Claude</strong> (Anthropic, via Claude Code) — engenharia, medições, pesquisa e este texto. Todos os números vêm de scripts rodados na máquina acima; os dados brutos estão em <a href="data/"><code>data/</code></a>.</li>
+<li><strong>A comunidade open source</strong>, cujo trabalho tornou isto possível e cujos achados lemos antes de medir qualquer coisa (<a href="RESEARCH.md">RESEARCH.md</a>): o projeto
+  <a href="https://github.com/0xShug0/audio.cpp">audio.cpp</a> e a receita de quantização do Fish, a <a href="https://fish.audio">Fish Audio</a> e as issues do <code>fish-speech</code>,
+  o <a href="https://github.com/rodrigomatta/s2.cpp">s2.cpp</a> e quem publicou GGUFs no Hugging Face, o SGLang-Omni, o llama.cpp (e os mantenedores que documentaram o comportamento dos checkpoints de janela deslizante), o Ollama, e todos que postaram benchmarks e relatos de erro.</li>
+</ul>
+<p>Medições brutas: <a href="data/"><code>data/</code></a> · O que lemos antes: <a href="RESEARCH.md">RESEARCH.md</a> · Adaptador de exemplo: <a href="fish_tts_adapter.py"><code>fish_tts_adapter.py</code></a></p><section class="samples-sec"><h2 id="pt-escute">Escute</h2><p>Amostras em espanhol do setup deste guia (Fish S2 Pro GGUF no audio.cpp em streaming, RTX 5060 Ti). A voz foi <b>criada pelo próprio modelo</b> (nenhuma gravação de terceiros): a primeira frase dele virou a referência das demais. Conferidas automaticamente — o reconhecimento de fala lê de volta cada amostra com 100% de acerto e nenhuma marca de emoção é falada em voz alta — mas <b>ainda não escutadas e selecionadas por um humano</b>. Geradas com pesos de uso não comercial; 'primeiro áudio' = tempo até o primeiro som no streaming.</p><h3>Q4_K — a configuração que usamos</h3><div class="samples"><figure><figcaption>Neutral · 6.5 s · 1st audio 0.25 s</figcaption><audio controls preload="none" src="samples/q4_k_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Question / surprise · 4.0 s · 1st audio 0.18 s</figcaption><audio controls preload="none" src="samples/q4_k_sorpresa.wav"></audio><blockquote lang="es">¿De verdad? No me lo esperaba para nada. ¿Y cómo fue que pasó?</blockquote></figure><figure><figcaption>Long answer · 13.1 s · 1st audio 0.26 s</figcaption><audio controls preload="none" src="samples/q4_k_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure></div><h3>Emoção só pelo texto × com marca inline (Q4_K)</h3><div class="samples"><figure><figcaption>Excited — no tag · 3.8 s · 1st audio 0.16 s</figcaption><audio controls preload="none" src="samples/q4_k_buena_noticia.wav"></audio><blockquote lang="es">¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!</blockquote></figure><figure><figcaption>Excited — [very excited] · 3.9 s · 1st audio 0.17 s</figcaption><audio controls preload="none" src="samples/q4_k_buena_noticia_tag.wav"></audio><blockquote lang="es">¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!</blockquote></figure><figure><figcaption>Sad — no tag · 3.8 s · 1st audio 0.17 s</figcaption><audio controls preload="none" src="samples/q4_k_lo_siento.wav"></audio><blockquote lang="es">Lo siento mucho. Parece que fue un día muy difícil para ti.</blockquote></figure><figure><figcaption>Sad — [sad] · 3.9 s · 1st audio 0.21 s</figcaption><audio controls preload="none" src="samples/q4_k_lo_siento_tag.wav"></audio><blockquote lang="es">Lo siento mucho. Parece que fue un día muy difícil para ti.</blockquote></figure></div><h3>Q8_0 × Q4_K — mesmo texto</h3><div class="samples"><figure><figcaption>Q8_0 — neutral · 6.4 s · 1st audio 0.40 s</figcaption><audio controls preload="none" src="samples/q8_0_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Q4_K — neutral · 6.5 s · 1st audio 0.25 s</figcaption><audio controls preload="none" src="samples/q4_k_hola.wav"></audio><blockquote lang="es">Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos.</blockquote></figure><figure><figcaption>Q8_0 — long answer · 12.9 s · 1st audio 0.35 s</figcaption><audio controls preload="none" src="samples/q8_0_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure><figure><figcaption>Q4_K — long answer · 13.1 s · 1st audio 0.26 s</figcaption><audio controls preload="none" src="samples/q4_k_explicacion.wav"></audio><blockquote lang="es">Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante.</blockquote></figure></div></section></div></main></div><footer>Fish Audio S2 Pro weights are non-commercial per the model card · <a href="https://github.com/andreaabcj-cmd/fish-s2-local-voice-notes">source</a></footer>
+<script>
+const K='fishguide.lang';let L='en';try{L=localStorage.getItem(K)||((navigator.language||'en').toLowerCase().startsWith('pt')?'pt':'en')}catch(e){}
+function setLang(l){L=l;document.querySelectorAll('[data-lang]').forEach(e=>e.hidden=e.dataset.lang!==l);
+document.querySelectorAll('.bar [data-set]').forEach(b=>b.classList.toggle('on',b.dataset.set===l));document.documentElement.lang=l==='pt'?'pt-BR':'en';
+try{localStorage.setItem(K,l)}catch(e){}}
+document.querySelectorAll('.bar [data-set]').forEach(b=>b.onclick=()=>setLang(b.dataset.set));
+document.querySelectorAll('pre').forEach(p=>{const b=document.createElement('button');b.className='cp';b.textContent='copy';
+b.onclick=()=>{navigator.clipboard.writeText(p.querySelector('code').innerText);b.textContent='copied';setTimeout(()=>b.textContent='copy',1400)};p.appendChild(b)});
+setLang(L);
+</script></body></html>

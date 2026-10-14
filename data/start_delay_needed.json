@@ -1,0 +1,102 @@
+{
+ "q8_0": [
+  {
+   "voice": "voice_A",
+   "length": "curta",
+   "audio_seconds": 3.76,
+   "first_audio_s": 0.25,
+   "start_delay_needed_single_request_s": 0.26,
+   "start_delay_needed_first_sentence_then_rest_s": 0.4
+  },
+  {
+   "voice": "voice_A",
+   "length": "media",
+   "audio_seconds": 8.59,
+   "first_audio_s": 0.3,
+   "start_delay_needed_single_request_s": 0.34,
+   "start_delay_needed_first_sentence_then_rest_s": 0.73
+  },
+  {
+   "voice": "voice_A",
+   "length": "longa",
+   "audio_seconds": 18.3,
+   "first_audio_s": 0.23,
+   "start_delay_needed_single_request_s": 1.0,
+   "start_delay_needed_first_sentence_then_rest_s": 1.68
+  },
+  {
+   "voice": "voice_B",
+   "length": "curta",
+   "audio_seconds": 4.09,
+   "first_audio_s": 0.19,
+   "start_delay_needed_single_request_s": 0.58,
+   "start_delay_needed_first_sentence_then_rest_s": 0.42
+  },
+  {
+   "voice": "voice_B",
+   "length": "media",
+   "audio_seconds": 9.38,
+   "first_audio_s": 0.21,
+   "start_delay_needed_single_request_s": 2.22,
+   "start_delay_needed_first_sentence_then_rest_s": 1.54
+  },
+  {
+   "voice": "voice_B",
+   "length": "longa",
+   "audio_seconds": 19.13,
+   "first_audio_s": 0.18,
+   "start_delay_needed_single_request_s": 2.5,
+   "start_delay_needed_first_sentence_then_rest_s": 3.86
+  }
+ ],
+ "q4_k": [
+  {
+   "voice": "voice_A",
+   "length": "curta",
+   "audio_seconds": 3.67,
+   "first_audio_s": 0.31,
+   "start_delay_needed_single_request_s": 0.32,
+   "start_delay_needed_first_sentence_then_rest_s": 0.21
+  },
+  {
+   "voice": "voice_A",
+   "length": "media",
+   "audio_seconds": 8.92,
+   "first_audio_s": 0.33,
+   "start_delay_needed_single_request_s": 0.34,
+   "start_delay_needed_first_sentence_then_rest_s": 0.16
+  },
+  {
+   "voice": "voice_A",
+   "length": "longa",
+   "audio_seconds": 19.41,
+   "first_audio_s": 0.24,
+   "start_delay_needed_single_request_s": 0.24,
+   "start_delay_needed_first_sentence_then_rest_s": 0.44
+  },
+  {
+   "voice": "voice_B",
+   "length": "curta",
+   "audio_seconds": 4.37,
+   "first_audio_s": 0.22,
+   "start_delay_needed_single_request_s": 0.24,
+   "start_delay_needed_first_sentence_then_rest_s": 0.26
+  },
+  {
+   "voice": "voice_B",
+   "length": "media",
+   "audio_seconds": 10.12,
+   "first_audio_s": 0.16,
+   "start_delay_needed_single_request_s": 0.16,
+   "start_delay_needed_first_sentence_then_rest_s": 0.23
+  },
+  {
+   "voice": "voice_B",
+   "length": "longa",
+   "audio_seconds": 19.74,
+   "first_audio_s": 0.24,
+   "start_delay_needed_single_request_s": 0.51,
+   "start_delay_needed_first_sentence_then_rest_s": 0.72
+  }
+ ]
+}

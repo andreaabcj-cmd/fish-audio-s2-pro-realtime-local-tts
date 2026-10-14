@@ -1,0 +1,91 @@
+{
+ "title": {
+  "en": "Listen",
+  "pt": "Escute"
+ },
+ "intro": {
+  "en": "Spanish samples from the setup in this guide (Fish S2 Pro GGUF in audio.cpp streaming, RTX 5060 Ti). The voice was <b>created by the model itself</b> (no third-party recording): its first sentence became the reference for the others. Automatically checked — speech recognition reads every sample back with 100% word match and no emotion tag is spoken aloud — but <b>not yet curated by a human ear</b>. Generated with non-commercial model weights; 'first audio' is time to first sound in streaming.",
+  "pt": "Amostras em espanhol do setup deste guia (Fish S2 Pro GGUF no audio.cpp em streaming, RTX 5060 Ti). A voz foi <b>criada pelo próprio modelo</b> (nenhuma gravação de terceiros): a primeira frase dele virou a referência das demais. Conferidas automaticamente — o reconhecimento de fala lê de volta cada amostra com 100% de acerto e nenhuma marca de emoção é falada em voz alta — mas <b>ainda não escutadas e selecionadas por um humano</b>. Geradas com pesos de uso não comercial; 'primeiro áudio' = tempo até o primeiro som no streaming."
+ },
+ "groups": [
+  {
+   "name": {
+    "en": "Q4_K — the setting we use",
+    "pt": "Q4_K — a configuração que usamos"
+   },
+   "items": [
+    {
+     "file": "q4_k_hola.wav",
+     "label": "Neutral · 6.5 s · 1st audio 0.25 s",
+     "text": "Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos."
+    },
+    {
+     "file": "q4_k_sorpresa.wav",
+     "label": "Question / surprise · 4.0 s · 1st audio 0.18 s",
+     "text": "¿De verdad? No me lo esperaba para nada. ¿Y cómo fue que pasó?"
+    },
+    {
+     "file": "q4_k_explicacion.wav",
+     "label": "Long answer · 13.1 s · 1st audio 0.26 s",
+     "text": "Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante."
+    }
+   ]
+  },
+  {
+   "name": {
+    "en": "Emotion from the text alone vs. with an inline tag (Q4_K)",
+    "pt": "Emoção só pelo texto × com marca inline (Q4_K)"
+   },
+   "items": [
+    {
+     "file": "q4_k_buena_noticia.wav",
+     "label": "Excited — no tag · 3.8 s · 1st audio 0.16 s",
+     "text": "¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!"
+    },
+    {
+     "file": "q4_k_buena_noticia_tag.wav",
+     "label": "Excited — [very excited] · 3.9 s · 1st audio 0.17 s",
+     "text": "¡Qué buena noticia! ¡Por fin lo logramos, no lo puedo creer!"
+    },
+    {
+     "file": "q4_k_lo_siento.wav",
+     "label": "Sad — no tag · 3.8 s · 1st audio 0.17 s",
+     "text": "Lo siento mucho. Parece que fue un día muy difícil para ti."
+    },
+    {
+     "file": "q4_k_lo_siento_tag.wav",
+     "label": "Sad — [sad] · 3.9 s · 1st audio 0.21 s",
+     "text": "Lo siento mucho. Parece que fue un día muy difícil para ti."
+    }
+   ]
+  },
+  {
+   "name": {
+    "en": "Q8_0 vs Q4_K — same text",
+    "pt": "Q8_0 × Q4_K — mesmo texto"
+   },
+   "items": [
+    {
+     "file": "q8_0_hola.wav",
+     "label": "Q8_0 — neutral · 6.4 s · 1st audio 0.40 s",
+     "text": "Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos."
+    },
+    {
+     "file": "q4_k_hola.wav",
+     "label": "Q4_K — neutral · 6.5 s · 1st audio 0.25 s",
+     "text": "Hola, soy una voz que corre por completo en esta computadora. Cuéntame qué necesitas y lo vemos juntos."
+    },
+    {
+     "file": "q8_0_explicacion.wav",
+     "label": "Q8_0 — long answer · 12.9 s · 1st audio 0.35 s",
+     "text": "Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante."
+    },
+    {
+     "file": "q4_k_explicacion.wav",
+     "label": "Q4_K — long answer · 13.1 s · 1st audio 0.26 s",
+     "text": "Te explico cómo funciona. Primero se escribe el texto, después el modelo genera el sonido en pedacitos, y se va reproduciendo mientras todavía se está creando. Así la voz empieza a hablar casi al instante."
+    }
+   ]
+  }
+ ]
+}

@@ -1,7 +1,11 @@
 # Fish Audio S2 Pro como voz local em *tempo real* numa GPU de 16 GB — junto de um LLM de 12B (Windows, RTX 5060 Ti)
 
+<p align="center"><img src="assets/ali_tchau.gif" alt="Ali, a mascote do assistente, dando tchauzinho (laço sem emenda)" width="190"></p>
+
 Notas de campo de quem montou um assistente de voz 100% local (espanhol, clonagem de voz a partir de uma referência curta + transcrição).
 Tudo foi medido em **uma única máquina**, em outubro de 2026. O que *não* foi medido está dito como tal.
+
+> 🔊 **Escute as amostras** na [página do projeto](https://andreaabcj-cmd.github.io/fish-s2-local-voice-notes/#pt-escute) ou em [`samples/`](samples/) (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).
 
 > **Resumo**
 > * O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB **junto de um modelo de chat de 12B**, usando o GGUF **Q4_K**.
@@ -147,5 +151,12 @@ O cartão do modelo Fish Audio S2 Pro restringe os pesos a uso **não comercial*
 audio.cpp, llama.cpp e Ollama têm licenças próprias.
 
 ## Créditos
-[audio.cpp](https://github.com/0xShug0/audio.cpp) (e a receita de quantização do Fish), [Fish Audio](https://fish.audio), llama.cpp, Ollama.
-Escrito com o Claude Code (Anthropic) numa longa sessão em dupla; todos os números vêm de scripts rodados na máquina acima.
+Isto foi um **trabalho de equipe**:
+
+* **André** ([@andreaabcj-cmd](https://github.com/andreaabcj-cmd)) — direção do produto, o hardware, todas as decisões e os testes de escuta (os únicos ouvidos humanos por trás dos "soa bem").
+* **Claude** (Anthropic, via Claude Code) — engenharia, medições, pesquisa e este texto. Todos os números vêm de scripts rodados na máquina acima; os dados brutos estão em [`data/`](data/).
+* **A comunidade open source**, cujo trabalho tornou isto possível e cujos achados lemos antes de medir qualquer coisa ([RESEARCH.md](RESEARCH.md)): o projeto
+  [audio.cpp](https://github.com/0xShug0/audio.cpp) e a receita de quantização do Fish, a [Fish Audio](https://fish.audio) e as issues do `fish-speech`,
+  o [s2.cpp](https://github.com/rodrigomatta/s2.cpp) e quem publicou GGUFs no Hugging Face, o SGLang-Omni, o llama.cpp (e os mantenedores que documentaram o comportamento dos checkpoints de janela deslizante), o Ollama, e todos que postaram benchmarks e relatos de erro.
+
+Medições brutas: [`data/`](data/) · O que lemos antes: [RESEARCH.md](RESEARCH.md) · Adaptador de exemplo: [`fish_tts_adapter.py`](fish_tts_adapter.py)
