@@ -151,6 +151,9 @@ sessões longas (horas); versões do audio.cpp mais novas que `b0feeff`; GPUs qu
 O cartão do modelo Fish Audio S2 Pro restringe os pesos a uso **não comercial** — confira os termos atuais antes de construir algo além de uso pessoal.
 audio.cpp, llama.cpp e Ollama têm licenças próprias.
 
+## Licenças
+Código: **MIT** · texto e dados: **CC BY 4.0** (reuso com crédito, uso comercial permitido) · amostras de áudio e a mascote Ali: **CC BY-NC 4.0** (não comercial). Detalhes em [LICENSES.md](LICENSES.md).
+
 ## Créditos
 Isto foi um **trabalho de equipe**:
 

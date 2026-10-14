@@ -152,6 +152,9 @@ long sessions (hours); audio.cpp versions newer than `b0feeff`; non-Blackwell GP
 The Fish Audio S2 Pro model card restricts the weights to **non-commercial** use — check the current terms before building anything beyond personal use.
 audio.cpp, llama.cpp and Ollama have their own licenses.
 
+## Licenses
+Code: **MIT** · text and data: **CC BY 4.0** (reuse with credit, commercial use allowed) · audio samples and the Ali mascot: **CC BY-NC 4.0** (non-commercial). Details in [LICENSES.md](LICENSES.md).
+
 ## Credits
 This was a **team effort**:
 

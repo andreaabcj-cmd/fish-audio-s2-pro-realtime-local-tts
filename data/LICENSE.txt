@@ -1,0 +1,1 @@
+Data: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - credit andreaabcj-cmd, Claude (Anthropic) and the community, with a link to this repository. See ../LICENSES.md

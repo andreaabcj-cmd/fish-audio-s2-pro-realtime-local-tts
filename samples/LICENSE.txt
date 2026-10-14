@@ -1,0 +1,1 @@
+Audio samples: CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/) - credit andreaabcj-cmd, Claude (Anthropic) and the community; non-commercial use only (the model weights are non-commercial). See ../LICENSES.md
