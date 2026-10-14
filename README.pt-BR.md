@@ -8,6 +8,7 @@ Tudo foi medido em **uma única máquina**, em outubro de 2026. O que *não* foi
 > 🔊 **Escute as amostras** na [página do projeto](https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#pt-escute) ou em [`samples/`](samples/) (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).
 
 > **Resumo**
+>
 > * O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB **junto de um modelo de chat de 12B**, usando o GGUF **Q4_K**.
 > * O primeiro áudio sai em **~0,15–0,35 s** com streaming (0,5 s pelo nosso adaptador HTTP), mas a geração é só **~1,0× a duração do áudio**
 >   (mediana do Q4; Q8 ~1,12×) — é preciso um pequeno colchão de reprodução (usamos 0,8 s), senão aparecem estalos.

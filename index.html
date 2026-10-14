@@ -46,12 +46,14 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font
 Everything below was measured on <strong>one machine</strong>, in October 2026. Where something was <em>not</em> measured, it says so.</p>
 <blockquote>
 <p>🔊 <strong>Listen to the samples</strong> on the <a href="https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#en-listen">project page</a> or in <a href="samples/"><code>samples/</code></a> (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).</p>
-<p><strong>TL;DR</strong>
-* Fish S2 Pro runs fine in real time on a 16 GB consumer GPU <strong>alongside a 12B chat model</strong>, with the <em>Q4_K</em> GGUF.
-* First audio arrives in <strong>~0.15–0.35 s</strong> with streaming (0.5 s through our HTTP adapter), but generation runs at only <strong>~1.0× the audio duration</strong>
-  (Q4 median; Q8 ~1.12×) — so you need a small playback buffer (we use 0.8 s) or you get clicks.
-* <strong>audio.cpp release 0.9.1 cannot stream Fish</strong> even though its README says so. Build from source (≥ commit <code>b0feeff</code>, 13 Oct 2026).
-* Separate win for the LLM side: warming the <em>stable prefix</em> of the prompt cut the per-answer prompt re-read from <strong>3.4 s → ~1.2 s</strong>.</p>
+<p><strong>TL;DR</strong></p>
+<ul>
+<li>Fish S2 Pro runs fine in real time on a 16 GB consumer GPU <strong>alongside a 12B chat model</strong>, with the <em>Q4_K</em> GGUF.</li>
+<li>First audio arrives in <strong>~0.15–0.35 s</strong> with streaming (0.5 s through our HTTP adapter), but generation runs at only <strong>~1.0× the audio duration</strong>
+  (Q4 median; Q8 ~1.12×) — so you need a small playback buffer (we use 0.8 s) or you get clicks.</li>
+<li><strong>audio.cpp release 0.9.1 cannot stream Fish</strong> even though its README says so. Build from source (≥ commit <code>b0feeff</code>, 13 Oct 2026).</li>
+<li>Separate win for the LLM side: warming the <em>stable prefix</em> of the prompt cut the per-answer prompt re-read from <strong>3.4 s → ~1.2 s</strong>.</li>
+</ul>
 </blockquote>
 <h2 id="en-1-test-machine">1. Test machine</h2>
 <table>
@@ -252,12 +254,14 @@ audio.cpp, llama.cpp and Ollama have their own licenses.</p>
 Tudo foi medido em <strong>uma única máquina</strong>, em outubro de 2026. O que <em>não</em> foi medido está dito como tal.</p>
 <blockquote>
 <p>🔊 <strong>Escute as amostras</strong> na <a href="https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#pt-escute">página do projeto</a> ou em <a href="samples/"><code>samples/</code></a> (espanhol; Q4_K × Q8_0; emoção pelo texto × marcas inline).</p>
-<p><strong>Resumo</strong>
-* O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB <strong>junto de um modelo de chat de 12B</strong>, usando o GGUF <strong>Q4_K</strong>.
-* O primeiro áudio sai em <strong>~0,15–0,35 s</strong> com streaming (0,5 s pelo nosso adaptador HTTP), mas a geração é só <strong>~1,0× a duração do áudio</strong>
-  (mediana do Q4; Q8 ~1,12×) — é preciso um pequeno colchão de reprodução (usamos 0,8 s), senão aparecem estalos.
-* <strong>O audio.cpp release 0.9.1 não faz streaming com o Fish</strong>, embora o README diga que sim. Compile do código-fonte (≥ commit <code>b0feeff</code>, 13/10/2026).
-* Ganho separado no LLM: "aquecer" o <em>prefixo estável</em> do prompt reduziu a releitura por resposta de <strong>3,4 s → ~1,2 s</strong>.</p>
+<p><strong>Resumo</strong></p>
+<ul>
+<li>O Fish S2 Pro roda bem em tempo real numa GPU de consumo de 16 GB <strong>junto de um modelo de chat de 12B</strong>, usando o GGUF <strong>Q4_K</strong>.</li>
+<li>O primeiro áudio sai em <strong>~0,15–0,35 s</strong> com streaming (0,5 s pelo nosso adaptador HTTP), mas a geração é só <strong>~1,0× a duração do áudio</strong>
+  (mediana do Q4; Q8 ~1,12×) — é preciso um pequeno colchão de reprodução (usamos 0,8 s), senão aparecem estalos.</li>
+<li><strong>O audio.cpp release 0.9.1 não faz streaming com o Fish</strong>, embora o README diga que sim. Compile do código-fonte (≥ commit <code>b0feeff</code>, 13/10/2026).</li>
+<li>Ganho separado no LLM: "aquecer" o <em>prefixo estável</em> do prompt reduziu a releitura por resposta de <strong>3,4 s → ~1,2 s</strong>.</li>
+</ul>
 </blockquote>
 <h2 id="pt-1-maquina-de-teste">1. Máquina de teste</h2>
 <table>

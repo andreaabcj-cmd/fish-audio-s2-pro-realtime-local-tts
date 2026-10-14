@@ -8,6 +8,7 @@ Everything below was measured on **one machine**, in October 2026. Where somethi
 > 🔊 **Listen to the samples** on the [project page](https://andreaabcj-cmd.github.io/fish-audio-s2-pro-realtime-local-tts/#en-listen) or in [`samples/`](samples/) (Spanish; Q4_K vs Q8_0; emotion from text vs inline tags).
 
 > **TL;DR**
+>
 > * Fish S2 Pro runs fine in real time on a 16 GB consumer GPU **alongside a 12B chat model**, with the *Q4_K* GGUF.
 > * First audio arrives in **~0.15–0.35 s** with streaming (0.5 s through our HTTP adapter), but generation runs at only **~1.0× the audio duration**
 >   (Q4 median; Q8 ~1.12×) — so you need a small playback buffer (we use 0.8 s) or you get clicks.
