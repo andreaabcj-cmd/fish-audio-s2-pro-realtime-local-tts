@@ -154,7 +154,7 @@ audio.cpp, llama.cpp e Ollama têm licenças próprias.
 ## Créditos
 Isto foi um **trabalho de equipe**:
 
-* **André** ([@andreaabcj-cmd](https://github.com/andreaabcj-cmd)) — direção do produto, o hardware, todas as decisões e os testes de escuta (os únicos ouvidos humanos por trás dos "soa bem").
+* **[@andreaabcj-cmd](https://github.com/andreaabcj-cmd)** — direção do produto, o hardware, todas as decisões e os testes de escuta (os únicos ouvidos humanos por trás dos "soa bem").
 * **Claude** (Anthropic, via Claude Code) — engenharia, medições, pesquisa e este texto. Todos os números vêm de scripts rodados na máquina acima; os dados brutos estão em [`data/`](data/).
 * **A comunidade open source**, cujo trabalho tornou isto possível e cujos achados lemos antes de medir qualquer coisa ([RESEARCH.md](RESEARCH.md)): o projeto
   [audio.cpp](https://github.com/0xShug0/audio.cpp) e a receita de quantização do Fish, a [Fish Audio](https://fish.audio) e as issues do `fish-speech`,
